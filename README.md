@@ -25,20 +25,20 @@ installation and execution
 
 指令部分可參閱 `package.json` 中查閱 `scripts` 部分。<br> 
 
-1. clone 這個專案，在終端機輸入:<br> 
-        ```
-        git clone https://github.com/Jackson162/restaurant_list.git
-        ```
+1. clone 這個專案，在終端機輸入:
+```
+git clone https://github.com/Jackson162/restaurant_list.git
+```
 
-2.  安裝本地套件 (local packages)，在終端機輸入:<br> 
-        ```
-        npm install
-        ```
-3.  啟動伺服器，執行專案:<br> 
-        ```
-        npm run dev
-        ```
-4.  打開瀏覽器，搜尋:<br> 
-        ```
-         http://localhost/3000
-         ```
+2.  安裝本地套件 (local packages)，在終端機輸入: 
+```
+npm install
+```
+3.  啟動伺服器，執行專案:
+```
+npm run dev
+```
+4.  打開瀏覽器，搜尋:
+```
+http://localhost/3000
+```
