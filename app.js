@@ -28,15 +28,22 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
 app.get('/search', (req, res, next) => {
     console.log(req.query);
     const keyword = req.query.keyword.trim();
-    const filteredRestaurants = restaurantList.results.filter(restaurant => {
-        return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
-            || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-    });
+    if (keyword === "") {
+        next() 
+        return //if next() without return, it will continue execution (act like a nested dunction with 2th callback)
+    }
+    const filteredRestaurants = restaurantList.results.filter(restaurant => 
+         restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
+        || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
+    );
     if (filteredRestaurants.length === 0) {
         res.render('none', { keyword: keyword })
     } else {
         res.render('index', { restaurants: filteredRestaurants, keyword: keyword })
     }
+}, (req, res) => {
+    res.redirect('/');
+    return
 })
 
 
