@@ -28,10 +28,7 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
 app.get('/search', (req, res, next) => {
     console.log(req.query);
     const keyword = req.query.keyword.trim();
-    if (keyword === "") {
-        next() 
-        return //if next() without return, it will continue execution (act like a nested dunction with 2th callback)
-    }
+    if (keyword === "") return res.redirect('/') //without return, it will continue execution, and cause cant set header error
     const filteredRestaurants = restaurantList.results.filter(restaurant => 
          restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
         || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
@@ -41,9 +38,6 @@ app.get('/search', (req, res, next) => {
     } else {
         res.render('index', { restaurants: filteredRestaurants, keyword: keyword })
     }
-}, (req, res) => {
-    res.redirect('/');
-    return
 })
 
 
