@@ -41,9 +41,9 @@ app.get('/', (req, res) => {
     
 })
 
-app.get('/restaurants/:restaurant_id', (req, res) => {
-    console.log(req.params.restaurant_id);
-    const id = req.params.restaurant_id;
+app.get('/restaurants/:id', (req, res) => {
+    console.log(req.params.id);
+    const id = req.params.id;
     return Restaurant.findById(id) 
                 .lean()
                 .then(restaurant => res.render('show', { restaurant }))
@@ -89,6 +89,49 @@ app.post('/restaurant', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.get('/restaurant/:id/edit', (req, res) => {
+    const id = req.params.id
+    return Restaurant.findById(id)
+                .lean()
+                .then(restaurant => {
+                    const category = restaurant.category;
+                    const options = {
+                        middleEast: Boolean(category === '中東餐廳'),
+                        italien: Boolean(category === '義式餐廳'),
+                        japanese: Boolean(category === '日本料理'),
+                        bar: Boolean(category === '酒吧'),
+                        cafe: Boolean(category === '咖啡'),
+                        thai: Boolean(category === '泰式'),
+                        american: Boolean(category === '美式'),
+                        french: Boolean(category === '法式'),
+                        taiwanese: Boolean(category === '台式')
+                    }
+                    res.render('edit', { restaurant, options })
+                })
+                .catch(error => console.log(error))
+})
+
+app.post('/restaurant/:id/edit', (req, res) => {
+    const id = req.params.id
+    const editedInfo = req.body
+    return Restaurant.findById(id)
+                .then(restaurant => {
+                    restaurant.name = editedInfo.name
+                    restaurant.name_en = editedInfo.name_en
+                    restaurant.category = editedInfo.category
+                    restaurant.image = editedInfo.image
+                    restaurant.location = editedInfo.location
+                    restaurant.phone = editedInfo.phone
+                    restaurant.google_map = editedInfo.google_map
+                    restaurant.rating = editedInfo.rating
+                    restaurant.description = editedInfo.description
+                    return restaurant.save() 
+                })
+                .then(restaurant => res.redirect(`/restaurants/${restaurant._id}`))
+                .catch(error => console.log(error))    
+})
+
+app.post('/restaurant/:id/delete')
 
 //start server listening
 app.listen(port, () => {
