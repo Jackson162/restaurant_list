@@ -43,5 +43,5 @@ app.get('/search', (req, res, next) => {
 
 //start server listening
 app.listen(port, () => {
-    console.log(`The server is listening to http://localhost/${port}`);
+    console.log(`The server is listening to http://localhost:${port}.`);
 });
