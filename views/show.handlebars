@@ -35,8 +35,9 @@
             <p class="mb-5">
                 {{restaurant.description}}
             </p>
-            <a href="/restaurant/{{restaurant._id}}/edit">編輯</a>
-            <form method="POST" action="/restaurants/{{this._id}}/delete">
+            <a href="/">返回清單</a>
+            <a href="/restaurants/{{restaurant._id}}/edit">編輯</a>
+            <form method="POST" action="/restaurants/{{restaurant._id}}/delete">
                 <button type="submit">刪除</button>
             </form>
         </div>

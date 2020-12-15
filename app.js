@@ -41,6 +41,25 @@ app.get('/', (req, res) => {
     
 })
 
+app.get('/restaurants/new', (req, res) => res.render('new')) //must be put before GET /restaurants/:id, or new will be viewed as :id
+
+app.post('/restaurants', (req, res) => {
+    const newRestaurant = req.body
+    return Restaurant.create({
+        name: newRestaurant.name,
+        name_en: newRestaurant.name_en,
+        category: newRestaurant.category,
+        image: newRestaurant.image,
+        location: newRestaurant.location,
+        phone: newRestaurant.phone,
+        google_map: newRestaurant.google_map,
+        rating: newRestaurant.rating,
+        description: newRestaurant.description
+    })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 app.get('/restaurants/:id', (req, res) => {
     console.log(req.params.id);
     const id = req.params.id;
@@ -70,26 +89,7 @@ app.get('/search', (req, res, next) => {
             .catch(error => console.log(error))
 })
 
-app.get('/restaurant/new', (req, res) => res.render('new'))
-
-app.post('/restaurant', (req, res) => {
-    const newRestaurant = req.body
-    return Restaurant.create({
-        name: newRestaurant.name,
-        name_en: newRestaurant.name_en,
-        category: newRestaurant.category,
-        image: newRestaurant.image,
-        location: newRestaurant.location,
-        phone: newRestaurant.phone,
-        google_map: newRestaurant.google_map,
-        rating: newRestaurant.rating,
-        description: newRestaurant.description
-    })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
-
-app.get('/restaurant/:id/edit', (req, res) => {
+app.get('/restaurants/:id/edit', (req, res) => {
     const id = req.params.id
     return Restaurant.findById(id)
                 .lean()
@@ -111,7 +111,7 @@ app.get('/restaurant/:id/edit', (req, res) => {
                 .catch(error => console.log(error))
 })
 
-app.post('/restaurant/:id/edit', (req, res) => {
+app.post('/restaurants/:id/edit', (req, res) => {
     const id = req.params.id
     const editedInfo = req.body
     return Restaurant.findById(id)
