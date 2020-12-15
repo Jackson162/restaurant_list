@@ -48,20 +48,34 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
                 .catch(error => console.log(error))
 })
 
-// app.get('/search', (req, res, next) => {
-//     console.log(req.query);
-//     const keyword = req.query.keyword.trim();
-//     if (keyword === "") return res.redirect('/') //without return, it will continue execution, and cause cant set header error
-//     const filteredRestaurants = restaurantList.results.filter(restaurant => 
-//          restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
-//         || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-//     );
-//     if (filteredRestaurants.length === 0) {
-//         res.render('none', { keyword: keyword })
-//     } else {
-//         res.render('index', { restaurants: filteredRestaurants, keyword: keyword })
-//     }
-// })
+app.get('/search', (req, res, next) => {
+    console.log(req.query);
+    const keyword = req.query.keyword.trim();
+    if (keyword.length === 0) return res.redirect('/') //without return, it will continue execution, and cause can't set header error
+    return Restaurant.find()
+            .lean()
+            .then(restaurants => {
+                const filteredRestaurants = restaurants.filter(restaurant => 
+                     restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
+                    || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
+                );
+                if (filteredRestaurants.length === 0) {
+                    res.render('none', { keyword: keyword })
+                } else {
+                    res.render('index', { restaurants: filteredRestaurants, keyword: keyword })
+                }
+            })
+            .catch(error => console.log(error))
+    // const filteredRestaurants = restaurantList.results.filter(restaurant => 
+    //      restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
+    //     || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
+    // );
+    // if (filteredRestaurants.length === 0) {
+    //     res.render('none', { keyword: keyword })
+    // } else {
+    //     res.render('index', { restaurants: filteredRestaurants, keyword: keyword })
+    // }
+})
 
 
 //start server listening
