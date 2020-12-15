@@ -6,6 +6,21 @@ const exphbs = require('express-handlebars');
 
 const restaurantList = require('./restaurant.json');
 
+//import mongoose
+const mongoose = require('mongoose')
+//connect to mongoDB: MongoClient constructor
+mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
+//get DB connection status
+const db = mongoose.connection
+//connection error
+db.on('error', () => {
+    console.log('detect mongoDB error!!!')
+})
+//connection succeeds
+db.once('open', () => {
+    console.log('mongoDB is connected.')
+})
+
 //setting template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -22,6 +37,7 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
     console.log(req.params.restaurant_id);
     const id = req.params.restaurant_id;
     const restaurant_info = restaurantList.results.find(restaurant => restaurant.id.toString() === id);
+    
     res.render('show', { restaurant:  restaurant_info });
 })
 
