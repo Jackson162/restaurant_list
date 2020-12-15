@@ -3,8 +3,8 @@ const app = express();
 const port = 3000;
 //import handlebars template engine
 const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser')
 
-// const restaurantList = require('./restaurant.json');
 //import Restaurant model
 const Restaurant = require('./models/restaurant')
 
@@ -29,6 +29,8 @@ app.set('view engine', 'handlebars');
 
 //setting static files
 app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 
 app.get('/', (req, res) => {
@@ -66,15 +68,25 @@ app.get('/search', (req, res, next) => {
                 }
             })
             .catch(error => console.log(error))
-    // const filteredRestaurants = restaurantList.results.filter(restaurant => 
-    //      restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
-    //     || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-    // );
-    // if (filteredRestaurants.length === 0) {
-    //     res.render('none', { keyword: keyword })
-    // } else {
-    //     res.render('index', { restaurants: filteredRestaurants, keyword: keyword })
-    // }
+})
+
+app.get('/restaurant/new', (req, res) => res.render('new'))
+
+app.post('/restaurant', (req, res) => {
+    const newRestaurant = req.body
+    return Restaurant.create({
+        name: newRestaurant.name,
+        name_en: newRestaurant.name_en,
+        category: newRestaurant.category,
+        image: newRestaurant.image,
+        location: newRestaurant.location,
+        phone: newRestaurant.phone,
+        google_map: newRestaurant.google_map,
+        rating: newRestaurant.rating,
+        description: newRestaurant.description
+    })
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 
