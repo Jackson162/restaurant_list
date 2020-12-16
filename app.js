@@ -40,24 +40,17 @@ app.get('/', (req, res) => {
             .catch(error => console.log(error))
     
 })
-
-app.get('/restaurants/new', (req, res) => res.render('new')) //must be put before GET /restaurants/:id, or new will be viewed as :id
+//must be put before GET /restaurants/:id, or new will be viewed as :id
+app.get('/restaurants/new', (req, res) => res.render('new')) 
 
 app.post('/restaurants', (req, res) => {
     const newRestaurant = req.body
-    return Restaurant.create({
-        name: newRestaurant.name.trim(),
-        name_en: newRestaurant.name_en.trim(),
-        category: newRestaurant.category.trim(),
-        image: newRestaurant.image.trim(),
-        location: newRestaurant.location.trim(),
-        phone: newRestaurant.phone.trim(),
-        google_map: newRestaurant.google_map.trim(),
-        rating: newRestaurant.rating.trim(),
-        description: newRestaurant.description.trim()
-    })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+    for (info in newRestaurant) {
+        newRestaurant[info].trim()
+    }
+    return Restaurant.create(newRestaurant)
+        .then(() => res.redirect('/'))
+        .catch(error => console.log(error))
 })
 
 app.get('/restaurants/:id', (req, res) => {
@@ -95,17 +88,9 @@ app.get('/restaurants/:id/edit', (req, res) => {
                 .lean()
                 .then(restaurant => {
                     const category = restaurant.category;
-                    const options = {
-                        middleEast: Boolean(category === '中東餐廳'),
-                        italien: Boolean(category === '義式餐廳'),
-                        japanese: Boolean(category === '日本料理'),
-                        bar: Boolean(category === '酒吧'),
-                        cafe: Boolean(category === '咖啡'),
-                        thai: Boolean(category === '泰式'),
-                        american: Boolean(category === '美式'),
-                        french: Boolean(category === '法式'),
-                        taiwanese: Boolean(category === '台式')
-                    }
+                    const options = {};
+                    options[category] = true //options.category doesn't apply predefined variable, [] works instead
+                    console.log(options)
                     res.render('edit', { restaurant, options })
                 })
                 .catch(error => console.log(error))
@@ -114,17 +99,12 @@ app.get('/restaurants/:id/edit', (req, res) => {
 app.post('/restaurants/:id/edit', (req, res) => {
     const id = req.params.id
     const editedInfo = req.body
+    for (info in editedInfo) {
+        editedInfo[info].trim() //white spaces seem to be trimmed even without doing so
+    }
     return Restaurant.findById(id)
                 .then(restaurant => {
-                    restaurant.name = editedInfo.name.trim()
-                    restaurant.name_en = editedInfo.name_en.trim()
-                    restaurant.category = editedInfo.category.trim()
-                    restaurant.image = editedInfo.image.trim()
-                    restaurant.location = editedInfo.location.trim()
-                    restaurant.phone = editedInfo.phone.trim()
-                    restaurant.google_map = editedInfo.google_map.trim()
-                    restaurant.rating = editedInfo.rating.trim()
-                    restaurant.description = editedInfo.description.trim()
+                    Object.assign(restaurant, editedInfo)
                     return restaurant.save() 
                 })
                 .then(restaurant => res.redirect(`/restaurants/${restaurant._id}`))

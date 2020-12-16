@@ -18,17 +18,7 @@ db.once('open', () => {
     console.log('mongoDB is connected.')
     const restaurants = restaurantList.results
     for (let i = 0; i < restaurantList.results.length; i++) {
-        Restaurant.create({
-            name: restaurants[i].name,
-            name_en: restaurants[i].name_en,
-            category: restaurants[i].category,
-            image: restaurants[i].image,
-            location: restaurants[i].location,
-            phone: restaurants[i].phone,
-            google_map: restaurants[i].google_map,
-            rating: restaurants[i].rating,
-            description: restaurants[i].description
-        })
+        Restaurant.create(restaurantList.results[i])
     }
     console.log('done!!!')
 });
