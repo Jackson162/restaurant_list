@@ -37,10 +37,12 @@
                                 {{this.rating}}
                                 <i class="fas fa-star fa-xs"></i>
                             </span>
-                            <a href="/restaurants/{{this._id}}/edit">編輯</a>
-                            <form method="POST" action="/restaurants/{{this._id}}/delete">
-                                <button type="submit">刪除</button>
-                            </form>
+                            <a class="fas fa-edit ml-4 mr-3 text-info" href="/restaurants/{{this._id}}/edit"></a>
+                            <button type="button" 
+                                    class="fas fa-trash  btn btn-info" 
+                                    data-toggle="modal" 
+                                    data-target="#delete-modal-{{this._id}}">
+                            </button>
                         </div>
                     </div>
                 </a>
@@ -49,3 +51,22 @@
         </div>
     </div>
 </div>
+
+{{!-- delete modal --}}
+{{#each restaurants}}
+<div class="modal fade" id="delete-modal-{{this._id}}" data-backdrop="static" tabindex="-1" data-keyboard="false" aria-labelledby="delete-modal-{{this._id}}-Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        確定要刪除 <strong>{{this.name}}</strong> 嗎？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">取消</button>
+        <form action="/restaurants/{{this._id}}/delete" method="POST">
+            <button type="submit" class="btn btn-danger">確認刪除</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}
