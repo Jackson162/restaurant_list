@@ -6,6 +6,11 @@ Features
 ============
 1. 使用者可利用搜尋欄搜尋餐廳的名稱與分類
 2. 點擊餐廳時會出現餐廳詳細資料
+-----12/16/2020更新-----
+3. 使用者可新增餐廳
+4. 使用者可修改餐廳資料
+5. 使用者可刪除餐廳資料
+
 
 prerequisites
 ================
@@ -20,6 +25,11 @@ prerequisites
 
 可於專案的 `package.json` 中查閱 `dependencies` 部分。<br> 
 
+## database related
+
+1. mongoDB: v4.2.11
+2. Robo 3T: v1.4.2
+
 installation and execution
 =======
 
@@ -29,16 +39,19 @@ installation and execution
 ```
 git clone https://github.com/Jackson162/restaurant_list.git
 ```
-
-2.  安裝本地套件 (local packages)，在終端機輸入: 
+2.  進入專案根目錄，安裝本地套件 (local packages)，在終端機輸入: 
 ```
 npm install
 ```
-3.  啟動伺服器，執行專案:
+3. 確認 mongoDB 執行後，連結 Robo 3T，在終端機輸入來連結資料庫並新增種子資料:
+```
+npm run seed
+```
+4.  啟動伺服器，執行專案:
 ```
 npm run dev
 ```
-4.  打開瀏覽器，搜尋:
+5.  打開瀏覽器，搜尋:
 ```
 http://localhost/3000
 ```
