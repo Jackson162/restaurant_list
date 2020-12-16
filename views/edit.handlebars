@@ -4,7 +4,7 @@
     <input type="text" placeholder="餐廳名稱" name="name" id="name" value="{{restaurant.name}}"><br>
 
     <label for="name_en">餐廳英文名稱:</label>
-    <input type="text" placeholder="餐廳英文名稱" name="name_en" id="name_en" value="{{restaurant.name_en}}"><br>
+    <input type="text" placeholder="餐廳英文名稱 (有效輸入: 字母、數字及空格)" name="name_en" id="name_en" value="{{restaurant.name_en}}" pattern="[0-9A-Za-z\s]*"><br>
 
     <label for="category">餐廳種類:</label>
     <select name="category" id="category">
@@ -20,17 +20,17 @@
     </select><br>
 
     <label for="image">餐廳照片:</label>
-    <input type="text" placeholder="圖片網址" name="image" id="image" value="{{restaurant.image}}"><br>
+    <input type="url" placeholder="圖片網址" name="image" id="image" value="{{restaurant.image}}"><br>
 
     <label for="location">餐廳地址:</label>
     <input type="text" placeholder="餐廳地址" name="location" id="location" value="{{restaurant.location}}"><br>
     
 
     <label for="phone">餐廳電話:</label>
-    <input type="text" placeholder="餐廳電話" name="phone"  id="phone" value="{{restaurant.phone}}"><br>
+    <input type="tel" placeholder="02-5684-9958 e.g.中間可三碼" name="phone"  id="phone" pattern="[0-9]{2}-[0-9]{3,4}-[0-9]{4}\s*" value="{{restaurant.phone}}"><br>
 
     <label for="google_map">Google地圖:</label>
-    <input type="text" placeholder="Google地圖網址" name="google_map"  id="google_map" value="{{restaurant.google_map}}"><br>
+    <input type="url" placeholder="https://www.google.com.tw/maps/..." name="google_map"  id="google_map" value="{{restaurant.google_map}}" pattern="https://www.google.com.tw/maps"><br>
 
     <label for="rating">餐廳評分:</label>
     <input type="number" placeholder="餐廳評分" name="rating"  id="rating" max="5" min="0" step="0.1" value="{{restaurant.rating}}"><br>

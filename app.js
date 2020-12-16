@@ -46,15 +46,15 @@ app.get('/restaurants/new', (req, res) => res.render('new')) //must be put befor
 app.post('/restaurants', (req, res) => {
     const newRestaurant = req.body
     return Restaurant.create({
-        name: newRestaurant.name,
-        name_en: newRestaurant.name_en,
-        category: newRestaurant.category,
-        image: newRestaurant.image,
-        location: newRestaurant.location,
-        phone: newRestaurant.phone,
-        google_map: newRestaurant.google_map,
-        rating: newRestaurant.rating,
-        description: newRestaurant.description
+        name: newRestaurant.name.trim(),
+        name_en: newRestaurant.name_en.trim(),
+        category: newRestaurant.category.trim(),
+        image: newRestaurant.image.trim(),
+        location: newRestaurant.location.trim(),
+        phone: newRestaurant.phone.trim(),
+        google_map: newRestaurant.google_map.trim(),
+        rating: newRestaurant.rating.trim(),
+        description: newRestaurant.description.trim()
     })
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
@@ -116,15 +116,15 @@ app.post('/restaurants/:id/edit', (req, res) => {
     const editedInfo = req.body
     return Restaurant.findById(id)
                 .then(restaurant => {
-                    restaurant.name = editedInfo.name
-                    restaurant.name_en = editedInfo.name_en
-                    restaurant.category = editedInfo.category
-                    restaurant.image = editedInfo.image
-                    restaurant.location = editedInfo.location
-                    restaurant.phone = editedInfo.phone
-                    restaurant.google_map = editedInfo.google_map
-                    restaurant.rating = editedInfo.rating
-                    restaurant.description = editedInfo.description
+                    restaurant.name = editedInfo.name.trim()
+                    restaurant.name_en = editedInfo.name_en.trim()
+                    restaurant.category = editedInfo.category.trim()
+                    restaurant.image = editedInfo.image.trim()
+                    restaurant.location = editedInfo.location.trim()
+                    restaurant.phone = editedInfo.phone.trim()
+                    restaurant.google_map = editedInfo.google_map.trim()
+                    restaurant.rating = editedInfo.rating.trim()
+                    restaurant.description = editedInfo.description.trim()
                     return restaurant.save() 
                 })
                 .then(restaurant => res.redirect(`/restaurants/${restaurant._id}`))
