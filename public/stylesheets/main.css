@@ -1,9 +1,14 @@
+body {
+  font-family: 'Langar', cursive;
+}
+
 header {
     overflow: hidden;
   }
   
   .navbar .navbar-brand {
     color: #4592af;
+
   }
   
   .navbar .navbar-brand:hover {
@@ -105,3 +110,13 @@ header {
     }
     
   }
+
+/* personal modification */
+.form-group {
+  display: flex;
+  flex-flow: row wrap;
+}
+.form-input {
+  flex: 1 1 auto;
+  margin-left: 5px;
+}

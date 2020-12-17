@@ -37,11 +37,13 @@
                                 {{this.rating}}
                                 <i class="fas fa-star fa-xs"></i>
                             </span>
-                            <a class="fas fa-edit ml-4 mr-3 text-info" href="/restaurants/{{this._id}}/edit"></a>
+                            <a class="fas fa-edit fa-lg text-info" href="/restaurants/{{this._id}}/edit"></a>
                             <button type="button" 
-                                    class="fas fa-trash  btn btn-info" 
+                                    class="fas fa-trash text-danger fa-lg btn btn-info" 
                                     data-toggle="modal" 
-                                    data-target="#delete-modal-{{this._id}}">
+                                    data-target="#delete-modal-{{this._id}}"
+                                    style="background: transparent; border:none; padding: 0px">
+                                    {{!-- data-bs-toggle does not work because we don't have v5 of Bootstrap --}}
                             </button>
                         </div>
                     </div>

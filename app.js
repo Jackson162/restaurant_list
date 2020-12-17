@@ -54,7 +54,6 @@ app.post('/restaurants', (req, res) => {
 })
 
 app.get('/restaurants/:id', (req, res) => {
-    console.log(req.params.id);
     const id = req.params.id;
     return Restaurant.findById(id) 
                 .lean()
@@ -63,7 +62,6 @@ app.get('/restaurants/:id', (req, res) => {
 })
 
 app.get('/search', (req, res, next) => {
-    console.log(req.query);
     const keyword = req.query.keyword.trim();
     if (keyword.length === 0) return res.redirect('/') //without return, it will continue execution, and cause can't set header error
     return Restaurant.find()
