@@ -88,7 +88,6 @@ app.get('/restaurants/:id/edit', (req, res) => {
                     const category = restaurant.category;
                     const options = {};
                     options[category] = true //options.category doesn't apply predefined variable, [] works instead
-                    console.log(options)
                     res.render('edit', { restaurant, options })
                 })
                 .catch(error => console.log(error))
@@ -102,7 +101,12 @@ app.post('/restaurants/:id/edit', (req, res) => {
     }
     return Restaurant.findById(id)
                 .then(restaurant => {
-                    Object.assign(restaurant, editedInfo)
+                    let spreadRes = {...restaurant}
+                    console.log('spreadRes: ', spreadRes)
+                    console.log('restaurant: ', restaurant)
+                    console.log('editedInfo: ', editedInfo)
+                    restaurant = Object.assign(restaurant, editedInfo)
+                    console.log('Object.assign: ', restaurant)
                     return restaurant.save() 
                 })
                 .then(restaurant => res.redirect(`/restaurants/${restaurant._id}`))
