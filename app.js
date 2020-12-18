@@ -4,6 +4,7 @@ const port = 3000;
 //import handlebars template engine
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 //import Restaurant model
 const Restaurant = require('./models/restaurant')
@@ -31,6 +32,8 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(methodOverride('_method'))
 
 
 app.get('/', (req, res) => {
@@ -63,6 +66,7 @@ app.get('/restaurants/:id', (req, res) => {
 
 app.get('/search', (req, res, next) => {
     const keyword = req.query.keyword.trim();
+    console.log(keyword) 
     if (keyword.length === 0) return res.redirect('/') //without return, it will continue execution, and cause can't set header error
     return Restaurant.find()
             .lean()
@@ -93,7 +97,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
                 .catch(error => console.log(error))
 })
 
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id', (req, res) => {
     const id = req.params.id
     const editedInfo = req.body
     for (info in editedInfo) {
@@ -113,7 +117,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
                 .catch(error => console.log(error))    
 })
 
-app.post('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id', (req, res) => {
     const id = req.params.id
     return Restaurant.findById(id)
                 .then(restaurant => restaurant.remove())
