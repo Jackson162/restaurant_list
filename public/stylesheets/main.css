@@ -4,8 +4,12 @@ body {
 
 header {
     overflow: hidden;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    z-index: 3;
   }
-  
+
   .navbar .navbar-brand {
     color: #4592af;
 
