@@ -3,8 +3,9 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-const helpers = require('handlebars-helpers')()
-
+const helpers = require('handlebars-helpers')() //在template使用
+const session = require('express-session')
+const usePassport = require('./config/passport')
 
 //import Restaurant model
 const routes = require('./routes') // /index.js (default looking for it)
@@ -25,6 +26,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 //method override
 app.use(methodOverride('_method'))
+
+app.use(session({
+  secret: 'JacksonSecret',
+  resave: false,
+  saveUninitialized: true
+}))
+
+usePassport(app)
 
 //routes
 app.use(routes)
