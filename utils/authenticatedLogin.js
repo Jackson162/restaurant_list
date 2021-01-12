@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       if (!login_error) login_error = info.message //if user input is empty, it will return a message
       return res.render('login', { userInput, login_error })
     }
-    console.log(user)
+    console.log('/utils/authenticatedLogin_user: ', user)
     req.logIn(user, function(err) {
       if (err) return next(err)
       return res.redirect('/')
