@@ -30,7 +30,7 @@ router.get('/:id/edit', (req, res) => {
                 .then(restaurant => {
                     const category = restaurant.category;
                     const options = {};
-                    options[category] = true //options.category doesn't routerly predefined variable, [] works instead
+                    options[category] = true //to use variable as key, using computed property
                     res.render('edit', { restaurant, options })
                 })
                 .catch(error => console.log(error))
