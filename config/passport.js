@@ -1,5 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const User = require('../models/user')
 
 module.exports = app => {
   //初始化passport模組
@@ -10,7 +11,7 @@ module.exports = app => {
     { usernameField: 'email' },
     (email, password, done) => {
       const userInput = { email, password }
-      user.findOne({ email })
+      User.findOne({ email })
         .then(user => {
           if (!user) {
             return done(null, false, { login_error: 'Unregistered email', userInput })
@@ -27,7 +28,7 @@ module.exports = app => {
   passport.serializeUser((user, done) => done(null, user._id))
 
   passport.deserializeUser((id, done) => {
-    user.findById(id)
+    User.findById(id)
       .lean()
       .then(user => done(null, user))
       .catch(err => done(err, false))

@@ -1,15 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../../models/user')
-const Restaurant = require('../../models/restaurant')
+const authenticatedLogin = require('../../utils/authenticatedLogin')
+
 
 router.get('/login', (req, res) => {
   res.render('login')
 })
 
-router.post('/login', (req, res) => {
-  res.send('POST /users/login')
-})
+router.post('/login', authenticatedLogin)
 
 router.get('/register', (req, res) => {
   res.render('register')
@@ -43,7 +42,8 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/logout', (req, res) => {
-  res.send('POST users/logout')
+ req.logout()
+ res.redirect('users/login')
 })
 
 
