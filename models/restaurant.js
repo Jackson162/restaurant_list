@@ -49,7 +49,7 @@ const restaurantSchema = new Schema({
       default: Date.now
     },
     userId: {
-      type: Schema.Types.ObjectId
+      type: Schema.Types.ObjectId,
       ref: 'User',
       index: true,
       required: true

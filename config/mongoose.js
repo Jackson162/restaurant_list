@@ -1,7 +1,7 @@
 //import mongoose
 const mongoose = require('mongoose')
 //connect to mongoDB: MongoClient constructor
-mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 //get DB connection status
 const db = mongoose.connection
 //connection error
