@@ -4,9 +4,8 @@ module.exports = (req, res, next) => {
   passport.authenticate('local', function(err, user, info) {
     if (err) return next(err);
     if (!user) {
-      console.log(info)
       let { userInput, login_error } = info //info is data sent by third argument of done
-      if (!login_error) login_error = info.message //if user input is empty, it will return a message
+      if (!login_error) login_error = ['請輸入帳密']
       return res.render('login', { userInput, login_error })
     }
     console.log('/utils/authenticatedLogin_user: ', user)

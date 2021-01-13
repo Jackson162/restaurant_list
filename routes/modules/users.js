@@ -16,15 +16,18 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
-  if (password !== confirmPassword) return res.send('password does not match')
-
+  const errors = []
+  if (!name || !email || !password || !confirmPassword) errors.push({ message: '所有欄位都是必填的'})
+  if (password !== confirmPassword) errors.push({ message: '密碼與確認密碼不相符' })
+  if (errors.length) return res.render('register', { name, email, password, confirmPassword, errors })
 
   //check whether email is registered
   User.findOne({ email })
     .then(user => {
       if (user) {
-        console.log('email is registered.')
+        errors.push({ message:'此信箱已被使用' })
         res.render('register', {
+          errors,
           name,
           email,
           password,
@@ -43,6 +46,7 @@ router.post('/register', (req, res) => {
 
 router.post('/logout', (req, res) => {
  req.logout()
+ req.flash('success_msg', '成功登出')
  res.redirect('/users/login')
 })
 
