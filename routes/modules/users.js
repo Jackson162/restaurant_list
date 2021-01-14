@@ -32,7 +32,7 @@ router.post('/register', (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body
   const errors = []
-  if (!name || !email || !password || !confirmPassword) errors.push({ message: '所有欄位都是必填的'})
+  if (!email || !password || !confirmPassword) errors.push({ message: '除了名字，其他欄位都是必填的'})
   if (password !== confirmPassword) errors.push({ message: '密碼與確認密碼不相符' })
   if (errors.length) return res.render('register', { name, email, password, confirmPassword, errors })
 
