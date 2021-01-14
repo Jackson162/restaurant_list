@@ -6,26 +6,29 @@ const Restaurant = require('../../models/restaurant')
 router.get('/new', (req, res) => res.render('new')) 
 
 router.post('/', (req, res) => {
+    const userId = req.user._id
     const newRestaurant = req.body
     for (info in newRestaurant) {
         newRestaurant[info].trim()
     }
-    return Restaurant.create(newRestaurant)
+    return Restaurant.create({ ...newRestaurant, userId })
         .then(() => res.redirect('/'))
         .catch(error => console.log(error))
 })
 
 router.get('/:id', (req, res) => {
-    const id = req.params.id;
-    return Restaurant.findById(id) 
+    const userId = req.user._id
+    const _id = req.params.id;
+    return Restaurant.findOne({ _id, userId }) 
                 .lean()
                 .then(restaurant => res.render('show', { restaurant }))
                 .catch(error => console.log(error))
 })
 
 router.get('/:id/edit', (req, res) => {
-    const id = req.params.id
-    return Restaurant.findById(id)
+    const userId = req.user._id
+    const _id = req.params.id;
+    return Restaurant.findOne({ _id, userId })
                 .lean()
                 .then(restaurant => {
                     const category = restaurant.category;
@@ -37,19 +40,15 @@ router.get('/:id/edit', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-    const id = req.params.id
+    const userId = req.user._id
+    const _id = req.params.id;
     const editedInfo = req.body
     for (info in editedInfo) {
         editedInfo[info].trim() //white spaces seem to be trimmed even without doing so
     }
-    return Restaurant.findById(id)
+    return Restaurant.findOne({ _id, userId })
                 .then(restaurant => {
-                    let spreadRes = {...restaurant}
-                    console.log('spreadRes: ', spreadRes)
-                    console.log('restaurant: ', restaurant)
-                    console.log('editedInfo: ', editedInfo)
                     restaurant = Object.assign(restaurant, editedInfo)
-                    console.log('Object.assign: ', restaurant)
                     return restaurant.save() 
                 })
                 .then(restaurant => res.redirect(`/restaurants/${restaurant._id}`))
@@ -57,8 +56,9 @@ router.put('/:id', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-    const id = req.params.id
-    return Restaurant.findById(id)
+    const userId = req.user._id
+    const _id = req.params.id;
+    return Restaurant.findOne({ _id, userId })
                 .then(restaurant => restaurant.remove())
                 .then(() => res.redirect('/'))
                 .catch(error => console.log(error))

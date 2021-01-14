@@ -3,10 +3,11 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 router.get('/', (req, res, next) => {
+    const userId = req.user._id
     const keyword = req.query.keyword.trim();
     console.log(keyword) 
     if (keyword.length === 0) return res.redirect('/') //without return, it will continue execution, and cause can't set header error
-    return Restaurant.find()
+    return Restaurant.find({ userId })
             .lean()
             .then(restaurants => {
                 const filteredRestaurants = restaurants.filter(restaurant => 
