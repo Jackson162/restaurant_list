@@ -6,17 +6,31 @@ const authenticatedLogin = require('../../utils/authenticatedLogin')
 
 
 router.get('/login', (req, res) => {
-  res.render('login')
+  try {
+    if (req.isAuthenticated()) {
+      return res.redirect('/')
+    }
+    return res.render('login')
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 router.post('/login', authenticatedLogin)
 
 router.get('/register', (req, res) => {
-  res.render('register')
+  try {
+    res.render('register')
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 router.post('/register', (req, res) => {
-  const { name, email, password, confirmPassword } = req.body
+  try {
+    const { name, email, password, confirmPassword } = req.body
   const errors = []
   if (!name || !email || !password || !confirmPassword) errors.push({ message: '所有欄位都是必填的'})
   if (password !== confirmPassword) errors.push({ message: '密碼與確認密碼不相符' })
@@ -44,14 +58,28 @@ router.post('/register', (req, res) => {
             password: hash
         }))
         .then(() => res.redirect('/'))
-        .catch(err => console.log(err))
     })
+    .catch(err => {
+      console.error(err)
+      res.render('error')
+    })
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 router.post('/logout', (req, res) => {
- req.logout()
- req.flash('success_msg', '成功登出')
- res.redirect('/users/login')
+  try {
+    req.logout()
+    req.flash('success_msg', '成功登出')
+    //session is kept even logout and same browser but different account share it 
+    req.session.keyword = undefined  
+    res.redirect('/users/login')
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 

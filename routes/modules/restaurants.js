@@ -14,6 +14,10 @@ router.post('/', (req, res) => {
     }
     return Restaurant.create({ ...newRestaurant, userId })
         .then(() => res.redirect('/'))
+        .catch(err => {
+          console.error(err)
+          res.render('error')
+        })
   } catch(err) {
     console.error(err)
     res.render('error')
@@ -32,7 +36,10 @@ router.get('/:id', (req, res) => {
                   console.log(createdDate)
                   res.render('show', { restaurant, createdDate})
                 })
-          
+                .catch(err => {
+                  console.error(err)
+                  res.render('error')
+                })
   } catch {
     console.error(err)
     res.render('error')
@@ -51,12 +58,17 @@ router.get('/:id/edit', (req, res) => {
                       options[category] = true //to use variable as key, using computed property
                       res.render('edit', { restaurant, options })
                   })
+                  .catch(err => {
+                    console.error(err)
+                    res.render('error')
+                  })
     } catch {
       res.render('error')
     }
 })
 
 router.put('/:id', (req, res) => {
+  try {
     const userId = req.user._id
     const _id = req.params.id;
     const editedInfo = req.body
@@ -69,16 +81,35 @@ router.put('/:id', (req, res) => {
                     return restaurant.save() 
                 })
                 .then(restaurant => res.redirect(`/restaurants/${restaurant._id}`))
-                .catch(error => console.log(error))    
+                .catch(err => {
+                  console.error(err)
+                  res.render('error')
+                })
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }  
 })
 
 router.delete('/:id', (req, res) => {
+  try {
     const userId = req.user._id
     const _id = req.params.id;
     return Restaurant.findOne({ _id, userId })
                 .then(restaurant => restaurant.remove())
                 .then(() => res.redirect('/'))
-                .catch(error => console.log(error))
+                .catch(err => {
+                  console.error(err)
+                  res.render('error')
+                })
+                .catch(err => {
+                  console.error(err)
+                  res.render('error')
+                })
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 module.exports = router

@@ -3,6 +3,7 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 router.get('/', (req, res, next) => {
+  try {
     const userId = req.user._id
     const keyword = req.query.keyword.trim();
     req.session.keyword = keyword
@@ -22,7 +23,14 @@ router.get('/', (req, res, next) => {
                     res.render('index', { restaurants: filteredRestaurants, keyword })
                 }
             })
-            .catch(error => console.log(error))
+            .catch(err => {
+              console.error(err)
+              res.render('error')
+            })
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 module.exports = router

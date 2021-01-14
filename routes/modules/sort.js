@@ -3,10 +3,12 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 router.get('/', (req, res) => {
+  try {
     const userId = req.user._id
     const sortOption = req.query.sort
-    const keyword = req.session.keyword
-    const keywordRegExp = new RegExp(`.*[${keyword}].*`, 'iy') //if use string in condition means filter with 100% match
+    let keyword = req.session.keyword
+    if (keyword === '') keyword = undefined //RegExp [] err if empty string
+    const keywordRegExp = new RegExp(`.*[${keyword}].*`, 'iy')//if use string in condition means filter with 100% match
     const conditionArray = [{ userId, name: keywordRegExp }, { userId, category: keywordRegExp }, { userId, name_en: keywordRegExp }]
     if (!keyword) {
       conditionArray.push({ userId })
@@ -24,7 +26,14 @@ router.get('/', (req, res) => {
           }
           return res.render('index', { restaurants, sortOption, keyword })
         })
-        .catch(error => console.log(error))
+        .catch(err => {
+          console.error(err)
+          res.render('error')
+        })
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 module.exports = router
