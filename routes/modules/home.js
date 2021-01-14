@@ -8,7 +8,12 @@ router.get('/', (req, res) => {
     //     .sort({ name_en: 'asc' })
     //     .then(restaurants => res.render('index', { restaurants }))
     //     .catch(error => console.log(error))
-    res.redirect('/sort?sort=name_en')
+    try {
+      res.redirect('/sort?sort=-createdAt')
+    } catch(err) {
+      console.error(err)
+      res.render('error')
+    }
 })
 
 module.exports = router

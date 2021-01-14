@@ -6,6 +6,7 @@ const Restaurant = require('../../models/restaurant')
 router.get('/new', (req, res) => res.render('new')) 
 
 router.post('/', (req, res) => {
+  try {
     const userId = req.user._id
     const newRestaurant = req.body
     for (info in newRestaurant) {
@@ -13,30 +14,46 @@ router.post('/', (req, res) => {
     }
     return Restaurant.create({ ...newRestaurant, userId })
         .then(() => res.redirect('/'))
-        .catch(error => console.log(error))
+  } catch(err) {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 router.get('/:id', (req, res) => {
+  try {
     const userId = req.user._id
     const _id = req.params.id;
     return Restaurant.findOne({ _id, userId }) 
                 .lean()
-                .then(restaurant => res.render('show', { restaurant }))
-                .catch(error => console.log(error))
+                .then(restaurant => {
+                  const createdTime = restaurant.createdAt
+                  const createdDate = `${createdTime.getFullYear()}-${createdTime.getMonth() + 1}-${createdTime.getDate()}`
+                  console.log(createdDate)
+                  res.render('show', { restaurant, createdDate})
+                })
+          
+  } catch {
+    console.error(err)
+    res.render('error')
+  }
 })
 
 router.get('/:id/edit', (req, res) => {
-    const userId = req.user._id
-    const _id = req.params.id;
-    return Restaurant.findOne({ _id, userId })
-                .lean()
-                .then(restaurant => {
-                    const category = restaurant.category;
-                    const options = {};
-                    options[category] = true //to use variable as key, using computed property
-                    res.render('edit', { restaurant, options })
-                })
-                .catch(error => console.log(error))
+    try {
+      const userId = req.user._id
+      const _id = req.params.id;
+      return Restaurant.findOne({ _id, userId })
+                  .lean()
+                  .then(restaurant => {
+                      const category = restaurant.category;
+                      const options = {};
+                      options[category] = true //to use variable as key, using computed property
+                      res.render('edit', { restaurant, options })
+                  })
+    } catch {
+      res.render('error')
+    }
 })
 
 router.put('/:id', (req, res) => {
