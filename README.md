@@ -12,6 +12,13 @@ Features
 5. 使用者可刪除餐廳資料
 -----12/19/2020更新-----
 6. 可改變首頁排序
+-----01/14/2020更新-----
+7. 新增註冊及登入驗證功能
+8. 新增臉書登入功能
+
+Bug fixed
+==============
+1. 修改排序會導致搜尋結果有異常
 
 
 prerequisites
@@ -60,4 +67,14 @@ npm run dev
 6. 打開瀏覽器，搜尋:
 ```
 http://localhost/3000
+```
+7. 使用種子資料登入
+```
+//user1
+email: user1@example.com
+password: 12345678
+
+//user2
+email: user2@example.com
+password: 12345678
 ```
